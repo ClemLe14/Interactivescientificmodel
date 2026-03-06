@@ -419,6 +419,55 @@ export default function App() {
           </div>
         </div>
 
+        {/* Legend */}
+        <div className="mt-6 bg-white border-2 border-gray-200 rounded-lg p-5">
+          <h3 className="font-bold text-gray-700 mb-4 text-sm uppercase tracking-wide">Legend — Arrows</h3>
+          <div className="flex flex-wrap gap-6">
+            {/* Green solid upward */}
+            <div className="flex items-center gap-3">
+              <svg width="20" height="36" viewBox="0 0 20 36">
+                <line x1="10" y1="34" x2="10" y2="10" stroke="#16a34a" strokeWidth="3"/>
+                <polygon points="10,0 20,14 0,14" fill="#16a34a" />
+              </svg>
+              <span className="text-sm text-gray-600">Causal / process flow (bottom → top)</span>
+            </div>
+            {/* Green double-headed vertical */}
+            <div className="flex items-center gap-3">
+              <svg width="20" height="36" viewBox="0 0 20 36">
+                <line x1="10" y1="6" x2="10" y2="30" stroke="#16a34a" strokeWidth="3"/>
+                <polygon points="10,0 20,10 0,10" fill="#16a34a" />
+                <polygon points="10,36 20,26 0,26" fill="#16a34a" />
+              </svg>
+              <span className="text-sm text-gray-600">Bidirectional relationship (within yellow zone)</span>
+            </div>
+            {/* Black double-headed horizontal */}
+            <div className="flex items-center gap-3">
+              <svg width="60" height="20" viewBox="0 0 60 20">
+                <line x1="6" y1="10" x2="54" y2="10" stroke="black" strokeWidth="2"/>
+                <polygon points="0,10 10,5 10,15" fill="black" />
+                <polygon points="60,10 50,5 50,15" fill="black" />
+              </svg>
+              <span className="text-sm text-gray-600">Mutual interaction (between immersive environment components)</span>
+            </div>
+            {/* Red dashed horizontal */}
+            <div className="flex items-center gap-3">
+              <svg width="60" height="20" viewBox="0 0 60 20">
+                <line x1="0" y1="10" x2="48" y2="10" stroke="#dc2626" strokeWidth="2" strokeDasharray="5,3"/>
+                <polygon points="60,10 48,4 48,16" fill="#dc2626" />
+              </svg>
+              <span className="text-sm text-gray-600">Disruption pathway (non-adherence / breakdown)</span>
+            </div>
+            {/* Red dashed vertical */}
+            <div className="flex items-center gap-3">
+              <svg width="20" height="36" viewBox="0 0 20 36">
+                <line x1="10" y1="36" x2="10" y2="10" stroke="#dc2626" strokeWidth="2" strokeDasharray="5,3"/>
+                <polygon points="10,0 20,12 0,12" fill="#dc2626" />
+              </svg>
+              <span className="text-sm text-gray-600">Outcome of disruption (absence / cybersickness / break)</span>
+            </div>
+          </div>
+        </div>
+
         {/* Collaboration Module */}
         <CollaborationModule />
       </div>
