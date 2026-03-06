@@ -50,6 +50,12 @@ app.post("/make-server-fb3cb64e/ideas", async (c) => {
       affiliation: body.affiliation || "",
       references: body.references || "",
       wantsToWork: body.wantsToWork || false,
+      sensoryModality: body.sensoryModality || "",
+      sensoryModalityOther: body.sensoryModalityOther || "",
+      deviceType: body.deviceType || "",
+      deviceTypeOther: body.deviceTypeOther || "",
+      tool: body.tool || "",
+      toolOther: body.toolOther || "",
       createdAt: new Date().toISOString(),
       interestedResearchers: [],
     };

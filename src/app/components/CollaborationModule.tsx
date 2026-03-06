@@ -24,6 +24,12 @@ interface ResearchIdea {
   affiliation?: string;
   references?: string;
   wantsToWork: boolean;
+  sensoryModality?: string;
+  sensoryModalityOther?: string;
+  deviceType?: string;
+  deviceTypeOther?: string;
+  tool?: string;
+  toolOther?: string;
   createdAt: string;
   interestedResearchers?: InterestedResearcher[];
   additionalReferences?: AdditionalReference[];
@@ -44,6 +50,12 @@ export function CollaborationModule() {
     affiliation: "",
     references: "",
     wantsToWork: false,
+    sensoryModality: "",
+    sensoryModalityOther: "",
+    deviceType: "",
+    deviceTypeOther: "",
+    tool: "",
+    toolOther: "",
   });
 
   // Forms for adding interest and references
@@ -91,7 +103,7 @@ export function CollaborationModule() {
       }
     } catch (err) {
       console.error("Error loading ideas:", err);
-      setError(`Erreur de chargement: ${String(err)}. Vérifiez que le serveur backend est actif.`);
+      setError(`Loading error: ${String(err)}. Please check that the backend server is running.`);
     } finally {
       setLoading(false);
     }
@@ -130,9 +142,9 @@ export function CollaborationModule() {
           setTimeout(() => testServer(retryCount + 1), 2000);
         } else {
           setError(
-            `Impossible de se connecter au serveur backend après plusieurs tentatives. ` +
-            `Le serveur est peut-être en cours de démarrage ou il y a une erreur de configuration. ` +
-            `Vérifiez la console pour plus de détails.`
+            `Unable to connect to the backend server after several attempts. ` +
+            `The server may be starting up or there is a configuration error. ` +
+            `Check the console for more details.`
           );
           setLoading(false);
         }
@@ -169,6 +181,12 @@ export function CollaborationModule() {
           affiliation: "",
           references: "",
           wantsToWork: false,
+          sensoryModality: "",
+          sensoryModalityOther: "",
+          deviceType: "",
+          deviceTypeOther: "",
+          tool: "",
+          toolOther: "",
         });
         setShowForm(false);
       } else {
@@ -176,12 +194,12 @@ export function CollaborationModule() {
       }
     } catch (err) {
       console.error("Error submitting idea:", err);
-      alert("Erreur lors de la soumission: " + String(err));
+      alert("Submission error: " + String(err));
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Êtes-vous sûr de vouloir supprimer cette idée ?")) {
+    if (!confirm("Are you sure you want to delete this idea?")) {
       return;
     }
 
@@ -202,7 +220,7 @@ export function CollaborationModule() {
       }
     } catch (err) {
       console.error("Error deleting idea:", err);
-      alert("Erreur lors de la suppression: " + String(err));
+      alert("Deletion error: " + String(err));
     }
   };
 
@@ -228,7 +246,7 @@ export function CollaborationModule() {
       }
     } catch (err) {
       console.error("Error adding interest:", err);
-      alert("Erreur lors de l'ajout: " + String(err));
+      alert("Error adding interest: " + String(err));
     }
   };
 
@@ -254,7 +272,7 @@ export function CollaborationModule() {
       }
     } catch (err) {
       console.error("Error adding reference:", err);
-      alert("Erreur lors de l'ajout: " + String(err));
+      alert("Error adding reference: " + String(err));
     }
   };
 
@@ -262,7 +280,7 @@ export function CollaborationModule() {
     return (
       <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
         <div className="text-center py-12">
-          <p className="text-gray-600">Chargement des idées de recherche...</p>
+          <p className="text-gray-600">Loading research ideas...</p>
         </div>
       </div>
     );
@@ -274,7 +292,7 @@ export function CollaborationModule() {
         <div className="flex items-center gap-3">
           <Users className="w-6 h-6 text-blue-600" />
           <h2 className="text-2xl font-bold text-gray-900">
-            Module de Collaboration Scientifique
+            Scientific Collaboration Module
           </h2>
         </div>
         <button
@@ -282,17 +300,17 @@ export function CollaborationModule() {
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Plus className="w-5 h-5" />
-          Nouvelle idée
+          New idea
         </button>
       </div>
 
       <p className="text-gray-600 mb-6">
-        Proposez des idées de liens de recherche sur le modèle de présence, partagez vos coordonnées et collaborez avec d'autres chercheurs.
+        Propose research link ideas on the presence model, share your contact details and collaborate with other researchers.
       </p>
 
       {error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-800 mb-3">Erreur: {error}</p>
+          <p className="text-red-800 mb-3">Error: {error}</p>
           <button
             onClick={() => {
               setError(null);
@@ -301,7 +319,7 @@ export function CollaborationModule() {
             }}
             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
           >
-            Réessayer
+            Retry
           </button>
         </div>
       )}
@@ -309,12 +327,12 @@ export function CollaborationModule() {
       {/* Form */}
       {showForm && (
         <form onSubmit={handleSubmit} className="mb-8 bg-gray-50 p-6 rounded-lg border-2 border-blue-200">
-          <h3 className="text-xl font-semibold mb-4 text-gray-900">Proposer une nouvelle idée</h3>
+          <h3 className="text-xl font-semibold mb-4 text-gray-900">Propose a new idea</h3>
           
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Titre de l'idée *
+                Idea title *
               </label>
               <input
                 type="text"
@@ -322,7 +340,7 @@ export function CollaborationModule() {
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Ex: Lien entre présence sociale et modèle mental"
+                placeholder="e.g. Link between social presence and mental model"
               />
             </div>
 
@@ -335,14 +353,14 @@ export function CollaborationModule() {
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"
-                placeholder="Décrivez votre idée de recherche..."
+                placeholder="Describe your research idea..."
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nom *
+                  Name *
                 </label>
                 <input
                   type="text"
@@ -369,27 +387,112 @@ export function CollaborationModule() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Affiliation (optionnel)
+                Affiliation (optional)
               </label>
               <input
                 type="text"
                 value={formData.affiliation}
                 onChange={(e) => setFormData({ ...formData, affiliation: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Université, institution..."
+                placeholder="University, institution..."
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Références (optionnel)
+                References (optional)
               </label>
               <textarea
                 value={formData.references}
                 onChange={(e) => setFormData({ ...formData, references: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[80px]"
-                placeholder="Citations, DOI, liens vers articles..."
+                placeholder="Citations, DOI, links to articles..."
               />
+            </div>
+
+            {/* Sensory modality */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Sensory modality involved
+              </label>
+              <select
+                value={formData.sensoryModality}
+                onChange={(e) => setFormData({ ...formData, sensoryModality: e.target.value, sensoryModalityOther: "" })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">-- Select --</option>
+                <option value="auditory">Auditory</option>
+                <option value="visual">Visual</option>
+                <option value="tactile">Tactile</option>
+                <option value="auditory + visual">Auditory + Visual</option>
+                <option value="auditory + tactile">Auditory + Tactile</option>
+                <option value="visual + tactile">Visual + Tactile</option>
+                <option value="auditory + visual + tactile">Auditory + Visual + Tactile</option>
+                <option value="other">Other</option>
+              </select>
+              {formData.sensoryModality === "other" && (
+                <input
+                  type="text"
+                  placeholder="Please specify the sensory modality..."
+                  value={formData.sensoryModalityOther}
+                  onChange={(e) => setFormData({ ...formData, sensoryModalityOther: e.target.value })}
+                  className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              )}
+            </div>
+
+            {/* Device type */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Device type
+              </label>
+              <select
+                value={formData.deviceType}
+                onChange={(e) => setFormData({ ...formData, deviceType: e.target.value, deviceTypeOther: "" })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">-- Select --</option>
+                <option value="virtual reality">Virtual Reality</option>
+                <option value="mixed reality">Mixed Reality</option>
+                <option value="other">Other</option>
+              </select>
+              {formData.deviceType === "other" && (
+                <input
+                  type="text"
+                  placeholder="Please specify the device type..."
+                  value={formData.deviceTypeOther}
+                  onChange={(e) => setFormData({ ...formData, deviceTypeOther: e.target.value })}
+                  className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              )}
+            </div>
+
+            {/* Tool */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Tool
+              </label>
+              <select
+                value={formData.tool}
+                onChange={(e) => setFormData({ ...formData, tool: e.target.value, toolOther: "" })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">-- Select --</option>
+                <option value="computer">Computer</option>
+                <option value="headphones">Headphones</option>
+                <option value="head mounted display">Head Mounted Display (HMD)</option>
+                <option value="CAVE">CAVE</option>
+                <option value="other">Other</option>
+              </select>
+              {formData.tool === "other" && (
+                <input
+                  type="text"
+                  placeholder="Please specify the tool..."
+                  value={formData.toolOther}
+                  onChange={(e) => setFormData({ ...formData, toolOther: e.target.value })}
+                  className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              )}
             </div>
 
             <div className="flex items-center gap-2">
@@ -401,7 +504,7 @@ export function CollaborationModule() {
                 className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
               <label htmlFor="wantsToWork" className="text-sm font-medium text-gray-700">
-                Je souhaite travailler sur cette idée
+                I would like to work on this idea
               </label>
             </div>
           </div>
@@ -411,14 +514,14 @@ export function CollaborationModule() {
               type="submit"
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
             >
-              Soumettre
+              Submit
             </button>
             <button
               type="button"
               onClick={() => setShowForm(false)}
               className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
             >
-              Annuler
+              Cancel
             </button>
           </div>
         </form>
@@ -429,8 +532,8 @@ export function CollaborationModule() {
         {ideas.length === 0 ? (
           <div className="text-center py-12 text-gray-500">
             <LinkIcon className="w-12 h-12 mx-auto mb-3 opacity-50" />
-            <p>Aucune idée proposée pour le moment.</p>
-            <p className="text-sm mt-2">Soyez le premier à partager une idée de recherche !</p>
+            <p>No ideas proposed yet.</p>
+            <p className="text-sm mt-2">Be the first to share a research idea!</p>
           </div>
         ) : (
           ideas.map((idea) => (
@@ -448,7 +551,7 @@ export function CollaborationModule() {
                 <button
                   onClick={() => handleDelete(idea.id)}
                   className="ml-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                  title="Supprimer"
+                  title="Delete"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -456,7 +559,7 @@ export function CollaborationModule() {
 
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="font-medium text-gray-700">Auteur:</span>{" "}
+                  <span className="font-medium text-gray-700">Author:</span>{" "}
                   <span className="text-gray-600">{idea.author}</span>
                 </div>
                 <div>
@@ -474,15 +577,42 @@ export function CollaborationModule() {
                 <div>
                   <span className="font-medium text-gray-700">Date:</span>{" "}
                   <span className="text-gray-600">
-                    {new Date(idea.createdAt).toLocaleDateString("fr-FR")}
+                    {new Date(idea.createdAt).toLocaleDateString("en-GB")}
                   </span>
                 </div>
               </div>
 
               {idea.references && (
                 <div className="mt-3 pt-3 border-t border-gray-200">
-                  <span className="font-medium text-gray-700 text-sm">Références initiales:</span>
+                  <span className="font-medium text-gray-700 text-sm">Initial references:</span>
                   <p className="text-sm text-gray-600 mt-1 whitespace-pre-wrap">{idea.references}</p>
+                </div>
+              )}
+
+              {/* Sensory / Device / Tool badges */}
+              {(idea.sensoryModality || idea.deviceType || idea.tool) && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {idea.sensoryModality && (
+                    <span className="inline-flex items-center px-2.5 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">
+                      🎧 {idea.sensoryModality === "other" && idea.sensoryModalityOther
+                        ? `Other: ${idea.sensoryModalityOther}`
+                        : idea.sensoryModality.charAt(0).toUpperCase() + idea.sensoryModality.slice(1)}
+                    </span>
+                  )}
+                  {idea.deviceType && (
+                    <span className="inline-flex items-center px-2.5 py-1 bg-indigo-100 text-indigo-800 text-xs font-medium rounded-full">
+                      🥽 {idea.deviceType === "other" && idea.deviceTypeOther
+                        ? `Other: ${idea.deviceTypeOther}`
+                        : idea.deviceType.charAt(0).toUpperCase() + idea.deviceType.slice(1)}
+                    </span>
+                  )}
+                  {idea.tool && (
+                    <span className="inline-flex items-center px-2.5 py-1 bg-teal-100 text-teal-800 text-xs font-medium rounded-full">
+                      🖥️ {idea.tool === "other" && idea.toolOther
+                        ? `Other: ${idea.toolOther}`
+                        : idea.tool.charAt(0).toUpperCase() + idea.tool.slice(1)}
+                    </span>
+                  )}
                 </div>
               )}
 
@@ -490,7 +620,7 @@ export function CollaborationModule() {
                 <div className="mt-3">
                   <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
                     <Users className="w-3 h-3" />
-                    Disponible pour collaboration
+                    Available for collaboration
                   </span>
                 </div>
               )}
@@ -498,7 +628,7 @@ export function CollaborationModule() {
               {/* Interested Researchers Section */}
               {idea.interestedResearchers && idea.interestedResearchers.length > 0 && (
                 <div className="mt-4 pt-3 border-t border-gray-200">
-                  <span className="font-medium text-gray-700 text-sm">Chercheurs intéressés:</span>
+                  <span className="font-medium text-gray-700 text-sm">Interested researchers:</span>
                   <div className="mt-2 space-y-2">
                     {idea.interestedResearchers.map((researcher, idx) => (
                       <div key={idx} className="text-sm bg-blue-50 p-2 rounded">
@@ -519,13 +649,13 @@ export function CollaborationModule() {
               {/* Additional References Section */}
               {idea.additionalReferences && idea.additionalReferences.length > 0 && (
                 <div className="mt-4 pt-3 border-t border-gray-200">
-                  <span className="font-medium text-gray-700 text-sm">Références ajoutées:</span>
+                  <span className="font-medium text-gray-700 text-sm">Added references:</span>
                   <div className="mt-2 space-y-2">
                     {idea.additionalReferences.map((ref, idx) => (
                       <div key={idx} className="text-sm bg-yellow-50 p-2 rounded">
                         <p className="text-gray-800">{ref.citation}</p>
                         <p className="text-gray-600 text-xs mt-1">
-                          Ajouté par {ref.addedBy} le {new Date(ref.addedAt).toLocaleDateString("fr-FR")}
+                          Added by {ref.addedBy} on {new Date(ref.addedAt).toLocaleDateString("en-GB")}
                         </p>
                       </div>
                     ))}
@@ -540,25 +670,25 @@ export function CollaborationModule() {
                   className="flex items-center gap-1 px-3 py-1.5 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm"
                 >
                   <UserPlus className="w-4 h-4" />
-                  Manifester mon intérêt
+                  Express my interest
                 </button>
                 <button
                   onClick={() => setShowReferenceForm(showReferenceForm === idea.id ? null : idea.id)}
                   className="flex items-center gap-1 px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors text-sm"
                 >
                   <FileText className="w-4 h-4" />
-                  Ajouter une référence
+                  Add a reference
                 </button>
               </div>
 
               {/* Interest Form */}
               {showInterestForm === idea.id && (
                 <div className="mt-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <h4 className="font-medium text-gray-900 mb-3 text-sm">Manifester mon intérêt</h4>
+                  <h4 className="font-medium text-gray-900 mb-3 text-sm">Express my interest</h4>
                   <div className="space-y-2">
                     <input
                       type="text"
-                      placeholder="Votre nom *"
+                      placeholder="Your name *"
                       required
                       value={interestData.name}
                       onChange={(e) => setInterestData({ ...interestData, name: e.target.value })}
@@ -566,7 +696,7 @@ export function CollaborationModule() {
                     />
                     <input
                       type="email"
-                      placeholder="Votre email *"
+                      placeholder="Your email *"
                       required
                       value={interestData.email}
                       onChange={(e) => setInterestData({ ...interestData, email: e.target.value })}
@@ -574,7 +704,7 @@ export function CollaborationModule() {
                     />
                     <input
                       type="text"
-                      placeholder="Votre affiliation (optionnel)"
+                      placeholder="Your affiliation (optional)"
                       value={interestData.affiliation}
                       onChange={(e) => setInterestData({ ...interestData, affiliation: e.target.value })}
                       className="w-full px-3 py-1.5 border border-gray-300 rounded text-sm"
@@ -584,13 +714,13 @@ export function CollaborationModule() {
                         onClick={() => handleAddInterest(idea.id)}
                         className="px-4 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
                       >
-                        Envoyer
+                        Send
                       </button>
                       <button
                         onClick={() => setShowInterestForm(null)}
                         className="px-4 py-1.5 bg-gray-300 text-gray-700 rounded text-sm hover:bg-gray-400"
                       >
-                        Annuler
+                        Cancel
                       </button>
                     </div>
                   </div>
@@ -600,10 +730,10 @@ export function CollaborationModule() {
               {/* Reference Form */}
               {showReferenceForm === idea.id && (
                 <div className="mt-3 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                  <h4 className="font-medium text-gray-900 mb-3 text-sm">Ajouter une référence</h4>
+                  <h4 className="font-medium text-gray-900 mb-3 text-sm">Add a reference</h4>
                   <div className="space-y-2">
                     <textarea
-                      placeholder="Citation complète (APA, DOI, lien...) *"
+                      placeholder="Full citation (APA, DOI, link...) *"
                       required
                       value={referenceData.citation}
                       onChange={(e) => setReferenceData({ ...referenceData, citation: e.target.value })}
@@ -611,7 +741,7 @@ export function CollaborationModule() {
                     />
                     <input
                       type="text"
-                      placeholder="Votre nom *"
+                      placeholder="Your name *"
                       required
                       value={referenceData.addedBy}
                       onChange={(e) => setReferenceData({ ...referenceData, addedBy: e.target.value })}
@@ -622,13 +752,13 @@ export function CollaborationModule() {
                         onClick={() => handleAddReference(idea.id)}
                         className="px-4 py-1.5 bg-yellow-600 text-white rounded text-sm hover:bg-yellow-700"
                       >
-                        Ajouter
+                        Add
                       </button>
                       <button
                         onClick={() => setShowReferenceForm(null)}
                         className="px-4 py-1.5 bg-gray-300 text-gray-700 rounded text-sm hover:bg-gray-400"
                       >
-                        Annuler
+                        Cancel
                       </button>
                     </div>
                   </div>
