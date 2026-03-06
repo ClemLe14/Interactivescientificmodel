@@ -1,0 +1,72 @@
+────────────────────────
+FRAME CONNECTIONS
+────────────────────────
+
+Draw one vertical SVG line from:
+Top border of “Immersive environment”
+to
+Bottom border of yellow rectangle
+
+Add marker-end at the top only.
+
+Draw one vertical SVG line from:
+Top border of yellow rectangle
+to
+Bottom border of pink “Sense of presence”
+
+Add marker-end at the top only.
+
+These must be centered horizontally.
+
+────────────────────────
+INTERNAL CONNECTIONS
+────────────────────────
+
+Between Self-presence and Mental model:
+
+Draw ONE vertical SVG line
+Add marker-start and marker-end
+Center-to-center
+
+Between Mental model and Emotions:
+
+Draw ONE vertical SVG line
+Add marker-start and marker-end
+Center-to-center
+
+Between Emotions and Judgement:
+
+Draw ONE vertical SVG line
+Add marker-end only
+Center-to-center
+
+Between Judgement and Involvement:
+
+Draw ONE vertical SVG line
+Add marker-end only
+Center-to-center
+
+Between Involvement and Suspension of disbelief:
+
+Draw ONE vertical SVG line
+Add marker-end only
+Center-to-center
+
+Between Suspension of disbelief and Sense of presence:
+
+Draw ONE vertical SVG line
+Add marker-end only
+From center-top of Suspension
+to bottom border of pink rectangle
+
+────────────────────────
+STRICT RULES
+────────────────────────
+
+• No polygon arrowheads
+• No rotated triangles
+• No horizontal green arrows
+• No duplicated arrow segments
+• All lines must be perfectly vertical
+
+Use SVG <line> elements with marker-end or marker-start only.
